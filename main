@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main( void){
+	
+	int len, secnum, guesnum, i, j, plus, minus,tries=0 ;
+	int R[10];
+	int T[99999];
+	printf("Enter a digit 4 to 10: ");
+	scanf("%d",&len);
+	printf("WAIT 5-10 SEC\n");
+	// random sayı
+	for(i=0;i<=len;i++){
+		if(i==0){
+			// ilk sayı 0 olamaz
+			srand(time(NULL));
+			secnum = 1 + rand() %8;
+			R[0] = secnum;
+			
+		}
+			//diğer sayılar
+				
+		while(i!= 0){
+			srand(time(NULL));
+			secnum = rand() %9;	
+			for(j=0;j<=i;j++){
+				// aynı olursa yeni sayı seçtircez 
+				if( secnum == R[j]){
+					break;
+				}
+				if(j==i){
+					R[i]=secnum;	
+					break;
+				}
+			}
+			if(j==i) break;	
+		}	
+	}
+	printf("%d%d%d%d\n",R[0],R[1],R[2],R[3]);
+	printf("first 2 digit: %d%d\n",R[0],R[1]);
+	
+
+	// kullanıcıdan tahmin alma
+	while(plus != len ){
+		
+	printf("Enter a number(every digit is dif) with %d digit\n",len);
+	scanf("%d",&guesnum);
+	
+	// guesnum ı T[] içine atmak
+	T[tries] = guesnum;
+	tries++;
+	
+	// guesnum ı ayrıştırmak
+	int G[len];
+	
+	for(i=len-1;i>=0;i--){
+		G[i]= guesnum%10;
+		guesnum = guesnum/10;
+	}
+
+	// o sayıyı R[] la kontrol etme
+	// doğru sayı doğru yerde
+	plus=0,minus=0;
+	
+	for(i=0;i<len;i++){
+		if(R[i]==G[i]){
+			plus++;
+		}		
+	} 
+	
+	// doğru sayı yanlış yerde
+	for(i=0;i<len;i++)
+	{
+		for(j=0;j<len;j++)
+		{
+			if( i != j )
+			{
+				if( G[i] == R[j] ){
+				minus++;
+				}	
+			}		
+		}
+	}
+    printf("+%d -%d\n",plus,minus);
+	}
+	
+	printf(" CONGRATS \n YOUR NUMBER OF TRIES: %d\n",tries);
+		
+	// büyükten küçüğe T[] yi sıralama
+	int a, b, min, temp;
+	
+	for (a = 0; a < tries-1; a++)
+	{
+		min = a;
+		for (b = a+1; b < tries; b++){
+		
+			if (T[b] < T[min]){
+				min = b;
+		
+				temp = T[min];
+				T[min]= T[a];
+				T[a]= temp;
+			}
+		}	
+	}		
+	printf(" YOUR TRIES FROM SMALLEST TO LARGEST: ");
+	int k;
+	for (k=0; k < tries; k++){
+	
+		printf("%d ", T[k]);
+	}		
+}
